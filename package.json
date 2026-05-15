@@ -9,9 +9,17 @@
     "test:win": "set NODE_OPTIONS=--experimental-vm-modules&& jest",
     "test:win:watch": "set NODE_OPTIONS=--experimental-vm-modules&& jest --watchAll"
   },
-  "keywords": ["javascript", "datatypes", "lab", "education"],
+  "keywords": [
+    "javascript",
+    "datatypes",
+    "lab",
+    "education"
+  ],
   "license": "MIT",
   "devDependencies": {
     "jest": "^29.7.0"
+  },
+  "dependencies": {
+    "src": "^1.1.2"
   }
 }
