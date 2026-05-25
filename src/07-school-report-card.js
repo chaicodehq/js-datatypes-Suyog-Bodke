@@ -7,7 +7,7 @@
  * Rules:
  *   - student object: { name: "Rahul", marks: { maths: 85, science: 92, ... } }
  *   - Calculate using Object.values() and array methods:
- *     - totalMarks: sum of all marks (use reduce)
+ *     - totalMarks: sum of all marks (use reduce) 
  *     - percentage: (totalMarks / (numSubjects * 100)) * 100,
  *       rounded to 2 decimal places using parseFloat(val.toFixed(2))
  *     - grade based on percentage:
@@ -42,4 +42,41 @@
  */
 export function generateReportCard(student) {
   // Your code here
+  if (typeof student !== 'object' || student === null || typeof student.name !== 'string' || !student.name || typeof student.marks !== 'object' || !student.marks ||Object.keys(student.marks).length === 0) return null;
+ 
+  let invalidMarks = Object.values(student.marks).filter(m => typeof m !== 'number' || m < 0 || m > 100);
+  if (invalidMarks.length >= 1) return null;
+
+  const name = student.name;
+  const totalMarks = Object.values(student.marks).reduce((acc, curr) => acc + curr, 0);
+  const numSubjects = Object.values(student.marks).length;
+  const percentage = parseFloat(((totalMarks / (numSubjects * 100)) * 100).toFixed(2));
+  let grade = 'F';
+  if (percentage >= 90) {
+    grade = 'A+';
+  } else if (percentage >= 80 && percentage < 90) {
+    grade = 'A'
+  } else if (percentage >= 70 && percentage < 80) {
+    grade = 'B'
+  } else if (percentage >= 60 && percentage < 70) {
+    grade = 'C'
+  } else if (percentage >= 40 && percentage < 60) {
+    grade = 'D'
+  }
+
+  const highestSubject = Object.entries(student.marks).reduce((acc, curr) => {
+    return (acc[1] > curr[1] ? acc : curr);
+  })[0]
+  const lowestSubject = Object.entries(student.marks).reduce((acc, curr) => {
+    return (acc[1] < curr[1] ? acc : curr);
+  })[0]
+
+  const passedSubjects = Object.entries(student.marks).filter(([sub, marks]) => marks >= 40).map(([sub]) => sub);
+  const failedSubjects = Object.entries(student.marks).filter(([sub, marks]) => marks < 40).map(([sub]) => sub);
+
+  const subjectCount = Object.keys(student.marks).length;
+
+  return {
+    name, totalMarks, percentage, grade, highestSubject, lowestSubject, passedSubjects, failedSubjects, subjectCount
+  }
 }
